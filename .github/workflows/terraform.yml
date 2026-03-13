@@ -10,15 +10,21 @@ jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: hashicorp/setup-terraform@v3
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+
       - name: Terraform Format Check
         run: terraform fmt -check -recursive
 
   security:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
+
       - name: Trivy IaC Scan
         uses: aquasecurity/trivy-action@master
         with:
@@ -29,26 +35,22 @@ jobs:
   validate:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
+      # Authenticate to GCP using the secret
       - name: Authenticate to GCP
         uses: google-github-actions/auth@v2
         with:
           credentials_json: '${{ secrets.GCP_SA_KEY }}'
 
+      # Set up Terraform
       - uses: hashicorp/setup-terraform@v3
 
+      # Terraform Init
       - name: Terraform Init
         run: terraform init -backend=false
-        env:
-          TF_VAR_project_id: ${{ secrets.GOOGLE_PROJECT }}
-          TF_VAR_region: ${{ secrets.GOOGLE_REGION }}
-          TF_VAR_zone: ${{ secrets.GOOGLE_ZONE }}
 
+      # Terraform Validate
       - name: Terraform Validate
         run: terraform validate
-
-    env:
-      GOOGLE_PROJECT: chas-devsecops-2026
-      GOOGLE_REGION: europe-north1
-      GOOGLE_ZONE: europe-north1-a
