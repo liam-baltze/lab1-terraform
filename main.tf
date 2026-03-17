@@ -1,3 +1,4 @@
+# main.tf
 terraform {
   required_providers {
     google = {
@@ -10,7 +11,6 @@ terraform {
 provider "google" {
   project = var.project_id
   region  = var.region
-  zone    = var.zone
 }
 
 resource "google_compute_instance" "vm" {
@@ -28,7 +28,7 @@ resource "google_compute_instance" "vm" {
 
   network_interface {
     network = "default"
-    access_config {}
+    access_config {} # Ger VM:en en extern IP
   }
 
   metadata_startup_script = file("startup.sh")
