@@ -53,7 +53,8 @@ Below is a screenshot showing the pipeline successfully running and validating t
 
 The screenshot below shows the created VM instance inside the Google Cloud Console.
 
-*(Insert screenshot here)*
+<img width="1179" height="60" alt="image" src="https://github.com/user-attachments/assets/108e4f34-02d0-4e74-85e7-6190f18f1ffd" />
+
 
 ---
 
